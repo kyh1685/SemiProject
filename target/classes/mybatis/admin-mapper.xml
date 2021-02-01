@@ -1,0 +1,32 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Admin">
+
+<select resultType="kh.spring.dto.MembersDTO" id="login">select * from members where id= #{id} and pw = #{pw} and admin='Y' </select>
+
+<select resultType="kh.spring.dto.MembersDTO" id="blackList">select * from members</select>
+
+<update id="blackListUpd">update members set black_list = #{black_list} where id = #{id} </update>
+
+<select resultType="kh.spring.dto.MembersDTO" id="memberList">select * from members where admin = 'N' </select>
+
+
+<insert id="sendMsg" parameterType="java.util.List">
+
+<foreach separator=" " close="select * from dual" open="insert All" item="i" collection="list">into messages values(messages_seq.nextval,#{i.sender},#{i.receiver},#{i.title},#{i.contents},'N','Y',sysdate) </foreach>
+
+</insert>
+
+
+<select resultType="kh.spring.dto.GoodsDTO" id="goodsList">select * from goods order by goodSeq desc </select>
+
+
+<delete id="goodsListDel">
+delete from goods where goodSeq in 
+<foreach separator="," close=")" open="(" item="i" collection="list">#{i.goodSeq} </foreach>
+
+</delete>
+
+<update id="goodsListUpd">update goods set goodName = #{goodName}, goodDes = #{goodDes} where goodSeq = #{goodSeq} </update>
+</mapper>

@@ -1,0 +1,12 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="Report">
+
+<insert id="insert">insert into report values (report_seq.nextval,#{goodSeq},#{reportWriter},#{reportCode},#{reportContents},#{reportedUser},sysdate,'nonMemo') </insert>
+
+<select id="selectAll" resultType="kh.spring.dto.ReportDTO">select * from report </select>
+
+<select id="update">update report set reportMemo=#{reportMemo} where reportSeq=#{reportSeq} </select>
+
+</mapper>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="CustomerRequest">
+  
+
+  <select id="selectAll" resultType="kh.spring.dto.CustomerRequestDTO">
+  	select * from customer_service
+  </select>
+  
+  <update id="update">
+  	update customer_service set answer=#{answer} where seq=#{seq}
+  </update>
+  
+  <delete id="delete">
+  	delete from customer_service where seq in
+  	<foreach item="i" collection="list" open="(" close=")" separator=",">
+  		#{i.seq}
+  	</foreach>
+  </delete>
+  
+  </mapper>

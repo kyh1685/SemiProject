@@ -1,0 +1,20 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="PurchaseList">
+  
+
+<insert id="insert">
+insert into purchaseList values(purchaseList_seq.nextval,2,#{writer},#{title},#{price},sysdate,#{goodSeq})
+</insert>
+  
+ <delete id="delete">
+ 	delete from purchaselist where seq = #{seq}
+ </delete>
+	<insert id="insertPurchase">
+		insert into purchaseList values(purchaseList_seq.nextval,#{cateCode},#{goodWriter},#{goodName},#{price},sysdate,#{goodSeq})
+	</insert>
+	<delete id="deletePurchaseList">
+		delete from purchaseList where goodSeq =#{goodSeq}
+	</delete>
+  </mapper>

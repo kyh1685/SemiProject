@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Mypage">
+	<delete id="deleteSalesList">
+		delete from salesList where goodSeq =#{goodSeq}
+	</delete>
+	<select id="listMessages" resultType="kh.spring.dto.MessagesDTO">
+      select * from (select messages.*, row_number() over(order by write_date desc)
+      rn from messages where receiver =#{dto.receiver}) where rn between #{startRowNum} and #{endRowNum} 
+   </select>
+   <delete id="deleteMessages">
+      delete from messages where seq = #{seq} and receiver =#{receiver} 
+   </delete>
+   <select id="totalCountMessages" resultType="int">
+      select count(seq) from messages where receiver=#{receiver}
+   </select>
+   <select id="selectMessages" resultType="kh.spring.dto.MessagesDTO">
+      select * from messages where seq = #{seq} and receiver =#{receiver} order by write_date desc
+   </select>
+   <select id="ajaxMessages" resultType="kh.spring.dto.MessagesDTO">
+      select * from messages where receiver =#{receiver} and admin='Y' order by write_date desc
+   </select>
+   <update id="updateRead">
+      update messages set read ='Y' where seq =#{seq} and receiver = #{receiver}
+   </update>
+   <insert id="insertMessages">
+      insert into messages values(messages_seq.nextval,#{sender},#{receiver},#{title},#{contents},'N','N',sysdate)
+   </insert>
+   <update id="readAll">
+      update messages set read = 'Y'  where receiver =#{receiver}
+   </update>
+   <select id="searchMessages" resultType="kh.spring.dto.MessagesDTO">
+      select * from (select messages.*, row_number() over(order by write_date desc)
+      rn from messages where
+      <if test="category =='s'.toString()">
+          sender
+      </if>
+      <if test="category =='t'.toString()">
+         title 
+      </if>
+      <if test="category =='c'.toString()">
+         contents 
+      </if>
+       like '%'||#{searchText}||'%' and  receiver =#{dto.receiver}) where rn between #{startRowNum} and #{endRowNum}
+   </select>
+   <select id="totalSearchCountMessages" resultType="int">
+      select count(seq) from messages where
+      <if test="category =='s'.toString()">
+          sender
+      </if>
+      <if test="category =='t'.toString()">
+         title 
+      </if>
+      <if test="category =='c'.toString()">
+         contents 
+      </if>
+       like '%'||#{searchText}||'%' and receiver = #{dto.receiver} 
+   </select>
+   
+   <select id="countCustomResp" resultType="int">
+      select count(seq) from customer_service where writer=#{writer} and answer is not null and read ='N'
+   </select>
+   
+  <select id="basketCount" resultType="int">
+   		select count(seq) from basket where location = #{goodSeq} and id = #{id}
+   </select>
+   <select id="selectBasket" resultType="kh.spring.dto.BasketDTO">
+      select * from (select basket.*, row_number() over(order by reg_date desc)
+      rn from basket where id =#{dto.id}) where rn between #{startRowNum} and #{endRowNum} 
+   </select>
+   
+   <delete id="deleteViewBasket">
+   	delete from basket where location =${location} and id = #{id}
+   </delete>
+   <delete id="deleteBasket">
+      delete from basket where seq = #{seq}
+   </delete>
+   <select id="totalCountBasket" resultType="int">
+      select count(seq) from basket where id=#{id}
+   </select>
+   <select id= "searchBasket" resultType="kh.spring.dto.BasketDTO">
+      select * from (select basket.*, row_number() over(order by reg_date desc)
+      rn from basket where id = #{dto.id} and reg_date between #{startDate} and #{endDate}) where rn between #{startRowNum} and #{endRowNum} 
+   </select>
+   <select id="searchTotalCountBasket" resultType="int">
+      select count(seq) from basket where id = #{dto.id} and reg_date between #{startDate} and #{endDate}
+   </select>
+
+   <select id="selectMyBuy" resultType="kh.spring.dto.GoodsDTO">
+      select * from (select goods.*,row_number() over(order by goodDate desc) rn from goods where goodWriter = #{dto.goodWriter}) where cateCode ='1' and (rn between #{startRowNum} and #{endRowNum})
+   </select>
+   <select id="totalCountMyBuy" resultType="int">
+      select count(goodSeq) from goods where cateCode ='1' and goodWriter =#{goodWriter}
+   </select>
+   <select id= "searchMyBuy" resultType="kh.spring.dto.GoodsDTO">
+      select * from (select goods.*, row_number() over(order by goodDate desc)
+      rn from goods where goodWriter = #{dto.goodWriter} and goodDate between #{startDate} and #{endDate}) where cateCode ='1' and rn between #{startRowNum} and #{endRowNum} 
+   </select>
+   <select id="searchTotalCountMyBuy" resultType="int">
+      select count(goodSeq) from goods where goodWriter = #{dto.goodWriter} and cateCode ='1' and goodDate between #{startDate} and #{endDate}
+   </select>
+   
+   <select id="selectMySell" resultType="kh.spring.dto.GoodsDTO">
+      select * from (select goods.*, row_number() over(order by goodDate desc)
+      rn from goods where goodWriter =#{dto.goodWriter}) where cateCode ='2' and rn between #{startRowNum} and #{endRowNum}
+   </select>
+   <select id="totalCountMySell" resultType="int">
+      select count(goodSeq) from goods where cateCode ='2' and goodWriter =#{goodWriter}
+   </select>
+   <select id= "searchMySell" resultType="kh.spring.dto.GoodsDTO">
+      select * from (select goods.*, row_number() over(order by goodDate desc)
+      rn from goods where goodWriter = #{dto.goodWriter} and goodDate between #{startDate} and #{endDate}) where cateCode ='2' and rn between #{startRowNum} and #{endRowNum} 
+   </select>
+   <select id="searchTotalCountMySell" resultType="int">
+      select count(goodSeq) from goods where goodWriter = #{dto.goodWriter} and cateCode ='2' and goodDate between #{startDate} and #{endDate}
+   </select>
+   
+   <select id="selectSalesList" resultType="kh.spring.dto.SalesListDTO">
+      select * from (select salesList.*, row_number() over(order by write_date desc)
+      rn from salesList where writer = #{dto.writer}) where rn between #{startRowNum} and #{endRowNum}
+   </select>
+   <select id="totalCountSalesList" resultType="int">
+      select count(seq) from salesList where writer = #{writer}
+   </select>
+   <select id= "searchSalesList" resultType="kh.spring.dto.SalesListDTO">
+      select * from (select salesList.*, row_number() over(order by write_date desc)
+      rn from salesList where writer = #{dto.writer} and write_date between #{startDate} and #{endDate}) where rn between #{startRowNum} and #{endRowNum} 
+   </select>
+   <select id="searchTotalCountSalesList" resultType="int">
+      select count(seq) from salesList where writer = #{dto.writer} and write_date between #{startDate} and #{endDate}
+   </select>
+   <delete id="delete">
+   	delete from salesList where goodSeq = #{goodSeq}
+   </delete>
+   
+   <select id="selectPurchaseList" resultType="kh.spring.dto.PurchaseListDTO">
+      select * from (select purchaseList.*, row_number() over(order by write_date desc)
+      rn from purchaseList where writer = #{dto.writer}) where rn between #{startRowNum} and #{endRowNum}
+   </select>
+   <select id="totalCountPurchaseList" resultType="int">
+      select count(seq) from purchaseList where writer = #{writer}
+   </select>
+   <select id= "searchPurchaseList" resultType="kh.spring.dto.PurchaseListDTO">
+      select * from (select purchaseList.*, row_number() over(order by write_date desc)
+      rn from purchaseList where writer = #{dto.writer} and write_date between #{startDate} and #{endDate}) where rn between #{startRowNum} and #{endRowNum} 
+   </select>
+   <select id="searchTotalCountPurchaseList" resultType="int">
+      select count(seq) from purchaseList where writer = #{dto.writer} and write_date between #{startDate} and #{endDate}
+   </select>
+   
+   <select id="selectEndList_Clear" resultType="kh.spring.dto.EndList_ClearDTO">
+      select * from (select endList_Clear.*, row_number() over(order by write_date desc)
+      rn from endList_Clear where goodWriter = #{dto.goodWriter} or buyer=#{dto.buyer}) where rn between #{startRowNum} and #{endRowNum}
+   </select>
+   <select id="totalCountEndList_Clear" resultType="int">
+      select count(seq) from endList_Clear where goodWriter = #{goodWriter} or buyer=#{buyer}
+   </select>
+   <select id= "searchEndList_Clear" resultType="kh.spring.dto.EndList_ClearDTO">
+      select * from (select endList_Clear.*, row_number() over(order by write_date desc)
+      rn from endList_Clear where goodWriter = #{dto.goodWriter} or buyer=#{dto.buyer} and write_date between #{startDate} and #{endDate}) where rn between #{startRowNum} and #{endRowNum} 
+   </select>
+   <select id="searchTotalCountEndList_Clear" resultType="int">
+      select count(seq) from EndList_Clear where goodWriter = #{dto.goodWriter} or buyer=#{dto.buyer} and write_date between #{startDate} and #{endDate}
+   </select>
+   
+   <select id="selectEndList_Pay" resultType="kh.spring.dto.EndList_PayDTO">
+      select * from (select endList_Pay.*, row_number() over(order by reg_date desc)
+      rn from endList_Pay where id = #{dto.id}) where rn between #{startRowNum} and #{endRowNum}
+   </select>
+   <select id="totalCountEndList_Pay" resultType="int">
+      select count(seq) from endList_Pay where id = #{id}
+   </select>
+   <select id= "searchEndList_Pay" resultType="kh.spring.dto.EndList_PayDTO">
+      select * from (select endList_Pay.*, row_number() over(order by reg_date desc)
+      rn from endList_Pay where id = #{dto.id} and reg_date between #{startDate} and #{endDate}) where rn between #{startRowNum} and #{endRowNum} 
+   </select>
+   <select id="searchTotalCountEndList_Pay" resultType="int">
+      select count(seq) from EndList_Pay where id = #{dto.id} and reg_date between #{startDate} and #{endDate}
+   </select>
+   
+   <select id="selectCancelList" resultType="kh.spring.dto.CancelListDTO">
+      select * from (select cancelList.*, row_number() over(order by write_date desc)
+      rn from cancelList where writer = #{dto.writer}) where rn between #{startRowNum} and #{endRowNum}
+   </select>
+   <select id="totalCountCancelList" resultType="int">
+      select count(seq) from cancelList where writer = #{writer}
+   </select>
+   <select id= "searchCancelList" resultType="kh.spring.dto.CancelListDTO">
+      select * from (select cancelList.*, row_number() over(order by write_date desc)
+      rn from cancelList where writer = #{dto.writer} and write_date between #{startDate} and #{endDate}) where rn between #{startRowNum} and #{endRowNum} 
+   </select>
+   <select id="searchTotalCountCancelList" resultType="int">
+      select count(seq) from cancelList where writer = #{dto.writer} and  write_date between #{startDate} and #{endDate}
+   </select>
+</mapper>

@@ -1,0 +1,39 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Customer">
+
+<select resultType="kh.spring.dto.Customer_ServiceDTO" id="listByCpage">
+select * from(select customer_service.*,row_number() over(order by write_date desc) rn from customer_service) where rn between #{startRowNum} and #{endRowNum} 
+</select>
+
+<select resultType="kh.spring.dto.Customer_ServiceDTO" id="mylist">
+select * from(select customer_service.*,row_number() over(order by write_date desc) rn from customer_service where writer =#{id}) where rn between #{startRowNum} and #{endRowNum} 
+</select>
+
+<select resultType="kh.spring.dto.Customer_ServiceDTO" id="selectBySeq">
+select * from customer_service where seq=#{seq} 
+</select>
+
+<select resultType="int" id="getCount">
+select count(seq) from customer_service 
+</select>
+
+<insert id="insert">
+insert into customer_service values(cusService_seq.nextval,#{writer},#{title},#{contents},#{answer},sysdate,'N') 
+</insert>
+
+<update id="update">
+update customer_service set writer=#{writer}, title=#{title}, contents=#{contents} where seq=#{seq} 
+</update>
+   
+<update id="readUpdate">
+   	update customer_service set read = 'Y' where seq =#{seq}
+</update>
+<delete id="delete">
+	delete from customer_service where seq = #{seq} 
+</delete>
+<select resultType="int" id="getMyCount">
+select count(seq) from customer_service where writer =#{id}
+</select>
+</mapper>

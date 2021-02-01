@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Members"> 
+	<select id="getMember" resultType="kh.spring.dto.MembersDTO">
+		select * from members where id= #{id}
+	</select>
+	<select id="checkMileage" resultType="int">
+		select mileage from members where id = #{id}
+	</select>
+	<select id="blackListCheck" resultType="int">
+		select count(id) from members where id= #{id} and black_list ='Y'
+	</select>
+	<select id="myPageCheck" resultType="int">
+		select count(id) from members where id =#{id} and pw =#{pw}
+	</select>
+	
+	<select id="selectAll" resultType="kh.spring.dto.MembersDTO">
+		select * from members
+	</select>
+
+	<update id="updateMileage">
+		update members set mileage=#{mileage} where id=#{id}
+	</update>
+
+	<select id="selectMileage" resultType="int">
+		select mileage from
+		members where id=#{id}
+	</select>
+
+
+	<select resultType="Integer" id="login">
+		select count(*) from members
+		where id=#{id} and pw=#{pw}
+	</select>
+	
+	<select id="naverCk" resultType="kh.spring.dto.MembersDTO">
+  		select * from members where email like #{email}||'@%'
+  	</select>
+
+	<insert id="signup">
+		insert into members
+		values(#{id},#{name},#{pw},#{contact},#{email},'N','N',default)
+	</insert>
+
+	<select resultType="int" id="idcheck">
+		select count(*) from members where id = #{id}
+	</select>
+
+	<select resultType="int" id="emailcheck">
+		select count(*) from members where email = #{email}
+	</select>
+
+	<select resultType="kh.spring.dto.MembersDTO" id="selectMembers">
+		select * from members
+	</select>
+
+	<delete id="delete">
+		delete from members where id in
+		<foreach separator="," close=")" open="(" item="i"
+			collection="list">#{i.id} </foreach>
+	</delete>
+
+
+
+
+
+	<select resultType="Integer" id="checkId">
+		select count(*) from members where id=#{id}
+	</select>
+	
+	<select resultType="string" id="SelectEmailById">
+		select email from members where id=#{id}
+	</select>
+
+	<select resultType="string" id="SelectContactById">
+		select contact from members where id=#{id}
+	</select>
+	
+	<select resultType="kh.spring.dto.MembersDTO" id="SelectById">
+		select * from members where id=#{id}
+	</select>
+
+	<update id="okupdate">
+		update members set name=#{name},pw=#{pw},contact=#{contact} where id=#{id}
+	</update>
+	
+	<delete id="Delete">
+		delete from members where id=#{id}
+	</delete>
+</mapper>

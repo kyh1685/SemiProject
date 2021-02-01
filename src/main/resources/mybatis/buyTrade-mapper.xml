@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="BuyTrade">
+  	<select id="checkReq" resultType="int">
+  		select count(seq) from buyTrade where req='Y' and goodName = #{goodName}
+  	</select>
+  	<select id="tradeReq" resultType="String">
+  		select req from buyTrade where buyer = #{buyer} and goodWriter =#{goodWriter} and goodSeq = #{goodSeq}
+  	</select>
+  	<select id="checkTrade" resultType="int">
+  		select count(seq) from buyTrade where goodWriter =#{goodWriter} and req='Y'
+  	</select>
+  	<insert id="insertTrade">
+  		insert into buyTrade values(buyTrade_seq.nextval,#{cateCode},#{goodWriter},#{buyer},#{goodName},'N','N',#{price},#{goodSeq})
+  	</insert>
+  	<update id="updateReqTrade">
+  		update buyTrade set req ='Y' where buyer = #{buyer} and goodWriter =#{goodWriter} and goodSeq =#{goodSeq} 
+  	</update>
+  	<select id="countTrade" resultType="int">
+  		select count(seq) from buyTrade where buyer = #{buyer} and goodWriter =#{goodWriter} and goodSeq =#{goodSeq} 
+  	</select>
+  	<delete id="cancelReqTrade">
+  		delete from buyTrade where buyer = #{buyer} and goodWriter =#{goodWriter} and goodSeq =#{goodSeq} 
+  	</delete>
+  	<select id="selectReqList" resultType="kh.spring.dto.BuyTradeDTO">
+  		select * from buyTrade where goodWriter =#{goodWriter} and req='Y' order by seq
+  	</select>
+  	<select id="selectTradeSeq" resultType="kh.spring.dto.BuyTradeDTO">
+  		select * from buyTrade where seq=#{seq}
+  	</select>
+  	<update id="updateCf">
+  		update buyTrade set cf = 'Y' where seq = #{seq} 
+  	</update>
+  		<select id="selectTrade" resultType="kh.spring.dto.BuyTradeDTO">
+  		select * from buyTrade where buyer =#{buyer} and goodWriter =#{goodWriter} and goodSeq =#{goodSeq}
+  	</select>
+  		<select id="selectBuyerList" resultType="kh.spring.dto.BuyTradeDTO">
+  			select * from buyTrade where buyer =#{id} and req='Y' order by seq
+  		</select>
+  		<delete id="deleteTrade">
+  			delete from buyTrade where buyer = #{buyer} and goodWriter =#{goodWriter} and goodSeq =#{goodSeq} 
+  		</delete>
+ 
+  </mapper>

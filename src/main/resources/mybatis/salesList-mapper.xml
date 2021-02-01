@@ -1,0 +1,16 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="SalesList">
+  
+
+<insert id="insert">
+insert into SalesList values(salesList_seq.nextval,#{cateCode},#{goodWriter},#{goodName},#{goodPrice},sysdate,#{goodSeq})
+</insert>
+	<insert id="insertSales">
+		insert into SalesList values(salesList_seq.nextval,#{cateCode},#{buyer},#{goodName},#{price},sysdate,#{goodSeq})
+	</insert>
+	<delete id="deleteSalesList">
+		delete from salesList where goodSeq =#{goodSeq}
+	</delete>
+  </mapper>

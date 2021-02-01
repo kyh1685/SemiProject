@@ -1,0 +1,13 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="CancelList">
+  
+
+<insert id="insert">
+insert into cancelList values(cancelList_seq.nextval,2,#{writer},#{title},#{price},sysdate,#{goodSeq})
+</insert>
+  <insert id="insertCancel">
+  	insert into cancelList values(cancelList_seq.nextval,#{cateCode},#{buyer},#{goodName},#{price},sysdate,#{goodSeq})
+  </insert>
+  </mapper>

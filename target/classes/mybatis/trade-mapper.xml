@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="Trade">
+  <select resultType="int" id = "selectSeqFromTilte">
+   select seq from trade where title=#{title}
+</select>
+  <select resultType="kh.spring.dto.TradeDTO" id="selectAll">select * from members </select>
+<select id="checkReq" resultType="int">
+	select count(seq) from trade where title = #{goodSeq} and buyer_req='Y'
+</select>
+<update id="updateRequest">update trade set buyer_req='Y' where buyer=#{buyer} and seller=#{seller} and title=#{title} </update>
+
+<update id="updateRequestDel">update trade set buyer_req='N' where buyer=#{buyer} and seller=#{seller} and title=#{title} </update>
+
+<update id="updateConfirm">update trade set seller_cfm='Y' where seq=#{seq} </update>
+
+<select resultType="string" id="selectRequest">select buyer_req from trade where buyer=#{buyer} and seller=#{seller} and title=#{title} </select>
+
+<select resultType="string" id="selectConfirm">select seller_cfm from trade where buyer=#{buyer} and seller=#{seller} and title=#{title} </select>
+
+<insert id="insert">insert into trade values(trade_seq.nextval,#{buyer},#{seller},#{title},'N','N',#{price},#{goodSeq}) </insert>
+
+<select resultType="int" id="selectSeq">select seq from trade where buyer=#{buyer} and seller=#{seller} and title=#{title} </select>
+
+<select resultType="int" id="checkTrade">select count(seq) from trade where seller=#{sellerId} and buyer_req='Y' </select>
+
+<select resultType="string" id="selectBuyer">select buyer from trade where seller=#{seller} and title=#{title} </select>
+
+<select resultType="string" id="selectGoods">select goods from trade where seller=#{sellerId} </select>
+
+<select resultType="int" id="selectPrice">select price from trade where title=#{title} </select>
+
+<select resultType="kh.spring.dto.TradeDTO" id="selectConfirmList">select * from trade where seller=#{seller} and buyer_req='Y' </select>
+
+<select resultType="kh.spring.dto.TradeDTO" id="selectConfirmListB">select * from trade where buyer=#{buyer} and buyer_req='Y' </select>
+
+<select resultType="kh.spring.dto.TradeDTO" id="selectList">select * from trade where seller=#{seller} </select>
+
+<select resultType="kh.spring.dto.TradeDTO" id="selectTradeWant">select * from trade where seq=#{seq} and buyer_req='N' </select>
+
+<select resultType="kh.spring.dto.TradeDTO" id="selectTradeWant2">select * from trade where seq=#{seq} and buyer_req='Y' </select>
+
+<select resultType="kh.spring.dto.TradeDTO" id="selectTradeWant3">select * from trade where seq=#{seq}</select>
+
+<select resultType="string" id="selectSellerCfm">select seller_cfm from trade where seq = #{seq} </select>
+
+<select resultType="string" id="selectBuyerReq">select buyer_req from trade where seq = #{seq} </select>
+
+<select resultType="kh.spring.dto.TradeDTO" id="selectCheckTable">select * from trade where seq=#{seq} </select>
+
+<select id="selectBuyerList" resultType="kh.spring.dto.TradeDTO">
+  			select * from Trade where buyer =#{id} and buyer_req='Y' order by seq
+  		</select>
+
+<delete id="deleteTrade">
+	delete from trade where seq=#{seq}
+</delete>
+
+<select id="selectReqList" resultType="kh.spring.dto.TradeDTO">
+  		select * from Trade where seller =#{seller} and buyer_req='Y' order by seq
+  	</select>
+
+ </mapper>
