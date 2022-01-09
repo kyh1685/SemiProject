@@ -17,9 +17,9 @@
 - AWS(EC2, RDS)
 
 ## 📃 기획 & 설계
-[### 기능 명세서](https://www.notion.so/eebe45308ce248d29d94d1646f032fc4)
+### [기능 명세서](https://www.notion.so/eebe45308ce248d29d94d1646f032fc4)
 
-[### 페이지 기획서](https://www.notion.so/74f1dc7828c944d4a0ed5039a417a0f7)
+### [페이지 기획서](https://www.notion.so/74f1dc7828c944d4a0ed5039a417a0f7)
 
 ### DB 설계
 <img src="https://user-images.githubusercontent.com/62630941/148510933-7c9cfcfc-7bb4-4990-bfb3-b588f837b387.png" width="70%"/>
